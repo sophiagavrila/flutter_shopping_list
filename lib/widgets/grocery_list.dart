@@ -10,7 +10,6 @@ class GroceryList extends StatefulWidget {
 }
 
 class _GroceryListState extends State<GroceryList> {
-
   final List<GroceryItem> _groceryItems = [];
 
   void _addItem() async {
@@ -53,30 +52,26 @@ class _GroceryListState extends State<GroceryList> {
 
   @override
   Widget build(BuildContext context) {
-    
     Widget content = ListView.builder(
-        itemCount: _groceryItems.length,
-        itemBuilder: (ctx, index) => 
-          
-        Dismissible(
-          key: ValueKey(_groceryItems[index]),
-          background: Container(
-            color: Colors.red,
-            margin: const EdgeInsets.all(4),
-            
-          ),
-          onDismissed: (direction) => _removeItem(_groceryItems[index]),
-          child: ListTile(
-            title: Text(_groceryItems[index].name),
-            leading: Container(
-              width: 24,
-              height: 24,
-              color: _groceryItems[index].category.color,
-            ),
-            trailing: Text('${_groceryItems[index].quantity}'),
-          ),
+      itemCount: _groceryItems.length,
+      itemBuilder: (ctx, index) => Dismissible(
+        key: ValueKey(_groceryItems[index]),
+        background: Container(
+          color: Colors.red,
+          margin: const EdgeInsets.all(4),
         ),
-      );
+        onDismissed: (direction) => _removeItem(_groceryItems[index]),
+        child: ListTile(
+          title: Text(_groceryItems[index].name),
+          leading: Container(
+            width: 24,
+            height: 24,
+            color: _groceryItems[index].category.color,
+          ),
+          trailing: Text('${_groceryItems[index].quantity}'),
+        ),
+      ),
+    );
 
     if (_groceryItems.isEmpty) {
       content = Center(
@@ -101,7 +96,7 @@ class _GroceryListState extends State<GroceryList> {
           ],
         ),
       );
-    }  
+    }
 
     return Scaffold(
       appBar: AppBar(

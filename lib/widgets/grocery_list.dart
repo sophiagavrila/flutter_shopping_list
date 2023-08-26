@@ -29,19 +29,52 @@ class _GroceryListState extends State<GroceryList> {
     });
   }
 
+  void _removeItem(GroceryItem item) {
+    final itemIndex = _groceryItems.indexOf(item);
+    setState(() {
+      _groceryItems.remove(item);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        content: const Text('Item deleted.'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _groceryItems.insert(itemIndex, item);
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     
     Widget content = ListView.builder(
         itemCount: _groceryItems.length,
-        itemBuilder: (ctx, index) => ListTile(
-          title: Text(_groceryItems[index].name),
-          leading: Container(
-            width: 24,
-            height: 24,
-            color: _groceryItems[index].category.color,
+        itemBuilder: (ctx, index) => 
+          
+        Dismissible(
+          key: ValueKey(_groceryItems[index]),
+          background: Container(
+            color: Theme.of(context).colorScheme.error.withOpacity(0.75),
+            margin: EdgeInsets.all(4)
+            
           ),
-          trailing: Text('${_groceryItems[index].quantity}'),
+          onDismissed: (direction) => _removeItem(_groceryItems[index]),
+          child: ListTile(
+            title: Text(_groceryItems[index].name),
+            leading: Container(
+              width: 24,
+              height: 24,
+              color: _groceryItems[index].category.color,
+            ),
+            trailing: Text('${_groceryItems[index].quantity}'),
+          ),
         ),
       );
 
@@ -81,6 +114,6 @@ class _GroceryListState extends State<GroceryList> {
         ],
       ),
       body: content,
-      );
+    );
   }
 }

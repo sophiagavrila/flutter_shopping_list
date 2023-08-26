@@ -61,8 +61,8 @@ class _GroceryListState extends State<GroceryList> {
         Dismissible(
           key: ValueKey(_groceryItems[index]),
           background: Container(
-            color: Theme.of(context).colorScheme.error.withOpacity(0.75),
-            margin: EdgeInsets.all(4)
+            color: Colors.red,
+            margin: const EdgeInsets.all(4),
             
           ),
           onDismissed: (direction) => _removeItem(_groceryItems[index]),

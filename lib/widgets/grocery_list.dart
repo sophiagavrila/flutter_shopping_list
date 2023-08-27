@@ -14,6 +14,7 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   List<GroceryItem> _groceryItems = [];
+  var _isLoading = true;
 
   // This method is called once when the widget is first created, before the build method is called.
   @override
@@ -45,13 +46,17 @@ class _GroceryListState extends State<GroceryList> {
 
     setState(() {
           _groceryItems = loadedItems;
+          _isLoading = false;
     });
 
   }
 
   void _addItem() async {
     final newItem = await Navigator.of(context).push<GroceryItem>(
+      // This line of code will push the NewItem widget onto the stack and wait for the result.
       MaterialPageRoute(
+        // When the NewItem widget is popped off the stack, the result will be returned to this widget.
+        // By instantiating the NewItem widget here, we can pass the context of this widget to the NewItem widget.
         builder: (ctx) => const NewItem(),
       ),
     );
@@ -74,6 +79,10 @@ class _GroceryListState extends State<GroceryList> {
   @override
   Widget build(BuildContext context) {
     Widget content = const Center(child: Text('No items added yet.'));
+
+    if (_isLoading) {
+      content = const Center(child: CircularProgressIndicator());
+    }
 
     if (_groceryItems.isNotEmpty) {
       content = ListView.builder(
